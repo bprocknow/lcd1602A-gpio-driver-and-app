@@ -1,0 +1,20 @@
+LCD1602 Driver and Application
+
+GPIO Driver for a LCD1602A LCD screen with sysfs interface
+
+Requires a device tree source include file with 11 gpio pins.
+
+This application uses a Beaglebone Black board with AM3358 ARM Cortex-A8 processor and the following GPIO pins:
+
+8-27 (GPIO2_22) -> RS (Register Select)                AM335X_PIN_LCD_VSYNC
+P8-28 (GPIO2_24) -> R/W (Read / Write Select)           AM335X_PIN_LCD_PCLK
+P8-29 (GPIO2_23) -> E (Enable Signal)                   AM335X_PIN_LCD_HSYNC
+P8-46 (GPIO2_7) -> D0 (Data bus 0)                      AM335X_PIN_LCD_DATA1
+P8-45 (GPIO2_6) -> D1 (Data bus 1)                      AM335X_PIN_LCD_DATA0
+P8-44 (GPIO2_9) -> D2 (Data bus 2)                      AM335X_PIN_LCD_DATA3
+P8-43 (GPIO2_8) -> D3 (Data bus 3)                      AM335X_PIN_LCD_DATA2
+P8-42 (GPIO2_11) -> D4 (Data bus 4)                     AM335X_PIN_LCD_DATA5
+P8-41 (GPIO2_10) -> D5 (Data bus 5)                     AM335X_PIN_LCD_DATA4
+P8-40 (GPIO2_13) -> D6 (Data bus 6)                     AM335X_PIN_LCD_DATA7
+P8-39 (GPIO2_12) -> D7 (Data bus 7)                     AM335X_PIN_LCD_DATA6
+
