@@ -1,20 +1,71 @@
+
 LCD1602 Driver and Application
 
 GPIO Driver for a LCD1602A LCD screen with sysfs interface
 
 Requires a device tree source include file with 11 gpio pins.
 
+____________________________________________________________________________________________
+
+To directly use this code without writing a device tree source file for a different board:
 This application uses a Beaglebone Black board with AM3358 ARM Cortex-A8 processor and the following GPIO pins:
 
-8-27 (GPIO2_22) -> RS (Register Select)                AM335X_PIN_LCD_VSYNC
-P8-28 (GPIO2_24) -> R/W (Read / Write Select)           AM335X_PIN_LCD_PCLK
-P8-29 (GPIO2_23) -> E (Enable Signal)                   AM335X_PIN_LCD_HSYNC
-P8-46 (GPIO2_7) -> D0 (Data bus 0)                      AM335X_PIN_LCD_DATA1
-P8-45 (GPIO2_6) -> D1 (Data bus 1)                      AM335X_PIN_LCD_DATA0
-P8-44 (GPIO2_9) -> D2 (Data bus 2)                      AM335X_PIN_LCD_DATA3
-P8-43 (GPIO2_8) -> D3 (Data bus 3)                      AM335X_PIN_LCD_DATA2
-P8-42 (GPIO2_11) -> D4 (Data bus 4)                     AM335X_PIN_LCD_DATA5
-P8-41 (GPIO2_10) -> D5 (Data bus 5)                     AM335X_PIN_LCD_DATA4
-P8-40 (GPIO2_13) -> D6 (Data bus 6)                     AM335X_PIN_LCD_DATA7
-P8-39 (GPIO2_12) -> D7 (Data bus 7)                     AM335X_PIN_LCD_DATA6
+Beaglebone Outputs -> LCD Inputs:
+P9-1 (GND) -> VSS (GND)
+P9-3 (+5VDC) -> VDD (V+)
+
+P8-27 (GPIO2_22) -> RS (Register Select) 		AM335X_PIN_LCD_VSYNC
+P8-28 (GPIO2_24) -> R/W (Read / Write Select)		AM335X_PIN_LCD_PCLK
+P8-29 (GPIO2_23) -> E (Enable Signal)			AM335X_PIN_LCD_HSYNC
+P8-46 (GPIO2_7) -> D0 (Data bus 0)			AM335X_PIN_LCD_DATA1
+P8-45 (GPIO2_6) -> D1 (Data bus 1)			AM335X_PIN_LCD_DATA0
+P8-44 (GPIO2_9) -> D2 (Data bus 2)			AM335X_PIN_LCD_DATA3
+P8-43 (GPIO2_8) -> D3 (Data bus 3)			AM335X_PIN_LCD_DATA2
+P8-42 (GPIO2_11) -> D4 (Data bus 4)			AM335X_PIN_LCD_DATA5
+P8-41 (GPIO2_10) -> D5 (Data bus 5)			AM335X_PIN_LCD_DATA4
+P8-40 (GPIO2_13) -> D6 (Data bus 6)			AM335X_PIN_LCD_DATA7
+P8-39 (GPIO2_12) -> D7 (Data bus 7)			AM335X_PIN_LCD_DATA6
+
+
+Build Instructions:
+Requires:
+    * ARM based processor
+    * Linux source code that supports device tree
+    * u-boot.img, uEnv.txt, MLO, compiled uImage for linux source
+    * Way to boot linux rootfile system (Partitioned SD card) containing boot and rootfs 
+
+
+1. Downloading a compiler to cross-compile the application for the Beaglebone Black target
+Download the compiler that is compatible with the host build environment
+https://releases.linaro.org/components/toolchain/binaries/latest-4/arm-linux-gnueabihf/
+    * Add the compiler ( <Compatible downloaded compiler/bin/arm-linux-gnueabihf-gcc ) to the PATH env variable
+
+2. Building the dtb:
+Clone the linux repository ( https://github.com/beagleboard/linux )
+Checkout a version of Linux that supports device tree ( git checkout 5.4 )
+Copy the .dtsi file from this project to linux/arch/arm/boot/dts/
+Include the .dtsi file to the .dts file for the board
+For Beaglebone Black, add to am335x-boneblack.dts as an #include below am335x-boneblack-common.dtsi
+    a. Build the dtb for the target architecture using the downloaded cross-compiler from linux source (.../linux):
+       make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- am335x-boneblack.dtb
+    b. Copy the dtb file to the boot partition of the card used to boot the system
+
+3. Building the driver and application
+Modify the existing Makefile to point the KERN_DIR to the repo of the cloned linux kernel
+Using the provided Makefile:
+    a. Change the KERN_DIR path in the Makefile to the cloned/downloaded linux kernel source
+    b. make bone
+    c. make app
+    d. Copy the output files (.ko, .elf) to the device.  Could either copy to the rootfs of the sd card, or scp while Linux is running
+
+4. Running the application
+While the device is running Linux, 
+sudo insmod lcd1602a_driver.ko
+sudo ./lcd_app.elf
+
+________________________________________________________________________________________
+
+Using the application:
+    * Type text to write to the current line
+    * Type 'Enter' to switch to the other line
 
