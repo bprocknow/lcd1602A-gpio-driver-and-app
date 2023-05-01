@@ -5,36 +5,6 @@
 		compatible = "lcd_16x2_device";
 		pinctrl-names = "default";
 		pinctrl-0 = <&bone_p8>;
-/*
-		gpio1 {
-			label = "gpio2_2";
-			bone-gpios = <&gpio2 2 GPIO_ACTIVE_HIGH>;
-		};
-		gpio2 {
-			label = "gpio2_7";
-			bone-gpios = <&gpio2 7 GPIO_ACTIVE_HIGH>;
-		};
-		gpio3 {
-			label = "gpio2_8";
-			bone-gpios = <&gpio2 8 GPIO_ACTIVE_HIGH>;
-		};
-		gpio4 {
-			label = "gpio2_9";
-			bone-gpios = <&gpio2 9 GPIO_ACTIVE_HIGH>;
-		};
-		gpio5 {
-			label = "gpio2_10";
-			bone-gpios = <&gpio2 10 GPIO_ACTIVE_HIGH>;
-		};
-		gpio6 {
-			label = "gpio2_11";
-			bone-gpios = <&gpio2 11 GPIO_ACTIVE_HIGH>;
-		};
-		gpio7 {
-			label = "gpio2_12";
-			bone-gpios = <&gpio2 12 GPIO_ACTIVE_HIGH>;
-		};
-*/
 		gpio1 {
 			label = "gpio2_22";
 			bone-gpios = <&gpio2 22 GPIO_ACTIVE_HIGH>;
@@ -97,17 +67,6 @@
 
 &am33xx_pinmux {
 	bone_p8: bone_p8 {
-/*
-		pinctrl-single,pins = <
-			AM33XX_PADCONF(AM335X_PIN_GPMC_ADVN_ALE,PIN_OUTPUT,MUX_MODE7)
-			AM33XX_PADCONF(AM335X_PIN_LCD_DATA1,PIN_OUTPUT,MUX_MODE7)
-			AM33XX_PADCONF(AM335X_PIN_LCD_DATA2,PIN_OUTPUT,MUX_MODE7)
-			AM33XX_PADCONF(AM335X_PIN_LCD_DATA3,PIN_OUTPUT,MUX_MODE7)
-			AM33XX_PADCONF(AM335X_PIN_LCD_DATA4,PIN_OUTPUT,MUX_MODE7)
-			AM33XX_PADCONF(AM335X_PIN_LCD_DATA5,PIN_OUTPUT,MUX_MODE7)
-			AM33XX_PADCONF(AM335X_PIN_LCD_DATA6,PIN_OUTPUT,MUX_MODE7)
-		>;
-*/
 		pinctrl-single,pins = <
 			AM33XX_PADCONF(AM335X_PIN_LCD_VSYNC, PIN_OUTPUT, MUX_MODE7)
 			AM33XX_PADCONF(AM335X_PIN_LCD_PCLK, PIN_OUTPUT, MUX_MODE7)

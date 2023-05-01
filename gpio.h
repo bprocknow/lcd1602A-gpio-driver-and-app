@@ -28,12 +28,26 @@
 #define GPIO_DIR_IN "in"
 #define GPIO_DIR_OUT "out"
 
+/*
+ * Change the I/O direction of the specified pin
+ * directions:  Use GPIO_DIR_IN or GPIO_DIR_OUT
+ *
+ * Returns 1 on success, 0 on error
+ */
 int gpio_set_direction(char *gpio_name, char *direction);
 
 /*
- * Sets the 8 bits of data with the lowest 8 bits of the inputted value argument
+ * Set the gpio value (LOW_VALUE / HIGH_VALUE) for the specified GPIO pin
+ * 
+ * Returns 1 on success, 0 on error
  */
 int gpio_set_value(char *gpio_name, uint8_t value);
 
+/*
+ * Reads the value of the specified gpio to the value argument
+ * Possible outputs: LOW_VALUE, HIGH_VALUE
+ *
+ * Returns 1 on success, 0 on error
+ */
 int gpio_read_value(char *gpio_name, uint8_t *value);
 

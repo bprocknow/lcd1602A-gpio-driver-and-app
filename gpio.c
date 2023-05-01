@@ -9,8 +9,6 @@
 
 #define GPIO_STR_LEN 100
 
-
-
 int gpio_set_value(char *gpio_name, uint8_t value) {
         FILE *fp;
         char buf[GPIO_STR_LEN];

@@ -2,7 +2,7 @@ obj-m := lcd1602a_driver.o
 
 ARCH=arm
 CROSS_COMPILE=arm-linux-gnueabihf-
-KERN_DIR=<PATH TO LINUX SOURCE>
+KERN_DIR=/home/bprocknow/repo/linux-device-driver-udemy-demo/linux
 
 bone: 
 	make ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -C $(KERN_DIR) M=$(PWD) modules

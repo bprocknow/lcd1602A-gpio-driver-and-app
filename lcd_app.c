@@ -2,31 +2,35 @@
 #include "gpio.h"
 #include <stdio.h>
 #include <string.h>
+#include <errno.h>
 
 #define MAX_LINE_LEN_W_NULL 17
 #define VISIBLE_LCD_CHARS (MAX_LINE_LEN_W_NULL - 1)
 
-static void printf_all_lcd_lines(char text[LCD_MAX_LINES][MAX_LINE_LEN_W_NULL]) {
+static int printf_all_lcd_lines(char text[LCD_MAX_LINES][MAX_LINE_LEN_W_NULL]) {
+	int ret = 1;
 
 	if (text == NULL) {
-		return;
+		return -EINVAL;
 	}
 
-	lcd_clear_display();
+	ret &= lcd_clear_display();
 
-	lcd_set_cursor_to_line(LCD_FIRST_LINE);
+	ret &= lcd_set_cursor_to_line(LCD_FIRST_LINE);
 
-	if (text[LCD_FIRST_LINE]) {
-		lcd_printf(text[LCD_FIRST_LINE]);
-	} else {
-		printf("There is no text\n");
+	if (lcd_printf(text[LCD_FIRST_LINE]) < 0) {
+		ret = 0;
 	}
 
 	if (LCD_MAX_LINES == 2 && text[LCD_SECOND_LINE]) {
-		lcd_set_cursor_to_line(LCD_SECOND_LINE);
+		ret &= lcd_set_cursor_to_line(LCD_SECOND_LINE);
 
-		lcd_printf(text[LCD_SECOND_LINE]);
+		if (lcd_printf(text[LCD_SECOND_LINE]) < 0) {
+			ret = 0;
+		}
 	}
+
+	return ret;
 }
 
 // Input user text of max MAX_LINE_LEN_W_NULL characters
@@ -60,14 +64,21 @@ int main(void) {
 
 	char *testOutput;
 
-	init_lcd();
+	if (init_lcd() == 0) {
+		printf("Could not initialize LCD screen\n");
+		return 0;
+	}
 
-	lcd_return_home();
+	if (lcd_return_home() == 0) {
+		printf("Could not initialize LCD return home\n");
+		return 0;
+	}
 
 	// Turn the display, cursor and cursor blinking off
-	lcd_display_on_off_control(true, false, false);
-
-	// TODO Make sure all return values are checked
+	if (lcd_display_on_off_control(true, false, false) != 1) {
+		printf("Could not initialize LCD display setting\n");
+		return 0;
+	}
 
 	while(1) {
 		
@@ -81,7 +92,9 @@ int main(void) {
 		} else {
 			// Copy the text to the write buffer and print
 			memcpy(lcdText[currLine], inputText, MAX_LINE_LEN_W_NULL);
-			printf_all_lcd_lines(lcdText);
+			if (printf_all_lcd_lines(lcdText) <= 0) {
+				printf("Error occurred while printing to lcd screen\n");
+			}
 		}
 	}
 	return 0;
